@@ -32,9 +32,15 @@ class SearchEngineService
      */
     protected function connect()
     {
+        if ($this->config['host'] == 'localhost') {
+            $this->config['host'] = '127.0.0.1';
+        }
+        
         try {
-            $dsn = 'mysql:host='.$this->config['host'].';port='.$this->config['port'].';charset=utf8;';
+            $dsn = 'mysql:host=%host%;port=%port%;charset=utf8;';
+            $dsn = str_replace(['%host%', '%port%'], [$this->config['host'], $this->config['port']], $dsn);
             $this->connection = new \PDO($dsn, $this->config['user'], $this->config['password']);
+
         } catch (PDOException $e) {
             throw new SearchEngineException(sprintf('Could not connect to Sphinx daemon (%s)', $e->getMessage()));
         }
