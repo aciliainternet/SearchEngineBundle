@@ -1,7 +1,9 @@
 <?php
-namespace Acilia\Bundle\MetaTagsBundle\Service;
+namespace Acilia\Bundle\SearchEngineBundle\Service;
 
 use Acilia\Bundle\SearchEngineBundle\Library\SearchEngineException;
+use PDOException;
+use PDOStatement;
 
 class SearchEngineService
 {
@@ -26,16 +28,30 @@ class SearchEngineService
     /**
      * Create SphinxQL connection using PDO and save it into private property $connection.
      *
-     * @throws \Exception
+     * @throws SearchEngineException
      */
-    private function connect()
+    protected function connect()
     {
         try {
             $dsn = 'mysql:host='.$this->config['host'].';port='.$this->config['port'].';charset=utf8;';
             $this->connection = new \PDO($dsn, $this->config['user'], $this->config['password']);
-        } catch (\PDOException $e) {
-            throw new SearchEngineException($e->getMessage());
+        } catch (PDOException $e) {
+            throw new SearchEngineException(sprintf('Could not connect to Sphinx daemon (%s)', $e->getMessage()));
         }
+    }
+
+    public function query($query)
+    {
+        if ($this->connection ==  null) {
+            $this->connect();
+        }
+
+        $result = $this->connection->query($query);
+        if (! $result instanceof PDOStatement) {
+            throw new SearchEngineException('Incorrect results retrieved from Sphinx daemon');
+        }
+
+        return $result;
     }
 
 }
