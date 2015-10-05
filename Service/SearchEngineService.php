@@ -1,4 +1,5 @@
 <?php
+
 namespace Acilia\Bundle\SearchEngineBundle\Service;
 
 use Acilia\Bundle\SearchEngineBundle\Library\SearchEngineException;
@@ -12,10 +13,10 @@ class SearchEngineService
     private $connection = null;
 
     /**
-     * @param string        $host
-     * @param string        $port
-     * @param string        $user
-     * @param string        $password
+     * @param string $host
+     * @param string $port
+     * @param string $user
+     * @param string $password
      */
     public function __construct($host, $port, $user, $password)
     {
@@ -35,12 +36,11 @@ class SearchEngineService
         if ($this->config['host'] == 'localhost') {
             $this->config['host'] = '127.0.0.1';
         }
-        
+
         try {
             $dsn = 'mysql:host=%host%;port=%port%;charset=utf8;';
             $dsn = str_replace(['%host%', '%port%'], [$this->config['host'], $this->config['port']], $dsn);
             $this->connection = new \PDO($dsn, $this->config['user'], $this->config['password']);
-
         } catch (PDOException $e) {
             throw new SearchEngineException(sprintf('Could not connect to Sphinx daemon (%s)', $e->getMessage()));
         }
@@ -53,11 +53,18 @@ class SearchEngineService
         }
 
         $result = $this->connection->query($query);
-        if (! $result instanceof PDOStatement) {
+        if (!$result instanceof PDOStatement) {
             throw new SearchEngineException('Incorrect results retrieved from Sphinx daemon');
         }
 
         return $result;
     }
 
+    public function escapeQuery($query)
+    {
+        $from = array('\\', '(',')','|','-','!','@','~','"','&', '/', '^', '$', '=', "'", "\x00", "\n", "\r", "\x1a");
+        $to = array('\\\\', '\\\(','\\\)','\\\|','\\\-','\\\!','\\\@','\\\~','\\\"', '\\\&', '\\\/', '\\\^', '\\\$', '\\\=', "\\'", '\\x00', '\\n', '\\r', '\\x1a');
+
+        return str_replace($from, $to, $query);
+    }
 }
