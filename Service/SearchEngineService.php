@@ -59,4 +59,12 @@ class SearchEngineService
 
         return $result;
     }
+
+    public function escapeQuery($query)
+    {
+        $from = array('\\', '(',')','|','-','!','@','~','"','&', '/', '^', '$', '=', "'", "\x00", "\n", "\r", "\x1a");
+        $to = array('\\\\', '\\\(','\\\)','\\\|','\\\-','\\\!','\\\@','\\\~','\\\"', '\\\&', '\\\/', '\\\^', '\\\$', '\\\=', "\\'", '\\x00', '\\n', '\\r', '\\x1a');
+
+        return str_replace($from, $to, $query);
+    }
 }
