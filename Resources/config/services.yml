@@ -3,4 +3,4 @@ parameters:
 services:
     acilia.searchengine:
         class: Acilia\Bundle\SearchEngineBundle\Service\SearchEngineService
-        arguments: [%search.host%, %search.port%, %search.user%, %search.pass%]
+        arguments: ["%search.host%", "%search.port%", "%search.user%", "%search.pass%"]
