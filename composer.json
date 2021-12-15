@@ -1,21 +1,28 @@
 {
     "name": "aciliainternet/searchengine-bundle",
-    "type": "bundle",
     "description": "Acilia SearchEngine Bundle",
+    "type": "bundle",
+    "license": "proprietary",
     "keywords": ["bundle"],
     "homepage": "https://github.com/aciliainternet/SearchEngineBundle",
     "authors": [
         {
-            "name": "Acilia Internet",
-            "homepage": "http://acilia.es"
+            "name": "Acilia Software",
+            "homepage": "https://acilia.es"
         }
     ],
     "require": {
-        "php":                      ">=5.3.3",
-        "symfony/framework-bundle": ">=2.3.0"
+        "php": ">=7.2",
+        "symfony/framework-bundle": "^4.4"
     },
     "autoload": {
         "psr-0": { "Acilia\\Bundle\\SearchEngineBundle": "" }
     },
-    "target-dir": "Acilia/Bundle/SearchEngineBundle"
+    "target-dir": "Acilia/Bundle/SearchEngineBundle",
+    "extra": {
+        "symfony": {
+            "require": "4.4.*",
+            "allow-contrib": true
+        }
+    }
 }
