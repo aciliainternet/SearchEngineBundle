@@ -7,9 +7,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class SearchEngineService
 {
-    protected array $config = [];
-    protected ParameterBagInterface $params;
-    private \PDO $connection = null;
+    private $config = [];
+    private $connection = null;
 
     public function __construct(ParameterBagInterface $params)
     {
