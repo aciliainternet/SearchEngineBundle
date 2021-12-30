@@ -1,6 +1,10 @@
 parameters:
 
 services:
-#    acilia.searchengine:
-#        class: Acilia\Bundle\SearchEngineBundle\Service\SearchEngineService
-#        arguments: ["%search.host%", "%search.port%", "%search.user%", "%search.pass%"]
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Acilia\Bundle\SearchEngineBundle\Service\SearchEngineService:
+        public: true
